@@ -1,0 +1,31 @@
+{
+  "name": "reactnextexpress",
+  "version": "1.0.0",
+  "description": "Creating a React and Express app",
+  "main": "server.js",
+  "engines": {
+    "node": "20.5.1",
+    "npm": "10.2.0"
+  },
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "start": "npm run server",
+    "server": "node server.js",
+    "server2": "nodemon server.js",
+    "client": "npm run start --prefix client",
+    "client2": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server2\" \"npm run client2\""
+  },
+  "author": "Brandon Rodriguez",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
