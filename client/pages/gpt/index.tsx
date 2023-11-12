@@ -39,7 +39,6 @@ const GPT: React.FC = () => {
   }
   }
   
-
   const renderAiResponse = () => {
     return aiResponse.split('\n').map((line, index) => (
       <div key={index}>{line}</div>
