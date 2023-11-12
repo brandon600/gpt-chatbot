@@ -1,25 +1,23 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
+
 const GPT: React.FC = () => {
   // Define the state and its setter for the textarea content
   const [textAreaValue, setTextAreaValue] = useState<string>('');
   const [aiResponse, setAiResponse] = useState<string>('');
 
-
-  // Define a callback function that handles form submission
   const handleSubmit = useCallback((event: React.FormEvent) => {
-    event.preventDefault(); // Prevent the default form submit action
-    console.log(textAreaValue); // Log the textarea content
-    getMessages()
+    event.preventDefault();
+    getMessages();
   }, [textAreaValue]);
 
-  // Define a callback function that updates the state with the textarea content
   const handleTextAreaChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
   }, []);
 
   const getMessages = async () => {
+
 	const options = {
 		method: "POST",
 		body: JSON.stringify({
@@ -29,19 +27,23 @@ const GPT: React.FC = () => {
 			"Content-Type": "application/json"
 		}
 	}
-	try {
-		const response = await fetch ('http://localhost:8000/completions', options);
-		const data = await response.json();
-		console.log(data);
-		
-		// Check if the response contains the expected data and set the state
-		if (data.choices && data.choices[0] && data.choices[0].message) {
-		    setAiResponse(data.choices[0].message.content);
-		}
-	 } catch (error) {
-		console.error(error);
-	 }
+  try {
+    const response = await fetch('http://localhost:8000/completions', options);
+    const data = await response.json();
+
+    if (data.choices && data.choices[0] && data.choices[0].message) {
+      setAiResponse(data.choices[0].message.content);
+    }
+  } catch (error) {
+    console.error(error);
   }
+  }
+  
+  const renderAiResponse = () => {
+    return aiResponse.split('\n').map((line, index) => (
+      <div key={index}>{line}</div>
+    ));
+  };
 
   return (
     <div>
@@ -54,7 +56,9 @@ const GPT: React.FC = () => {
         />
         <button type="submit">Submit</button>
       </form>
-	 <div>{aiResponse}</div>
+    <div>
+       {renderAiResponse()}
+    </div>
     </div>
   );
 }
